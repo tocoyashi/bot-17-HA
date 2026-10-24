@@ -1,0 +1,77 @@
+name: Heikin Ashi Signals Bot
+
+on:
+  schedule:
+    # كل 30 دقيقة داخل نافذة التداول (00:00 - 18:00 UTC)
+    - cron: '0 0 * * *'
+    - cron: '30 0 * * *'
+    - cron: '0 1 * * *'
+    - cron: '30 1 * * *'
+    - cron: '0 2 * * *'
+    - cron: '30 2 * * *'
+    - cron: '0 3 * * *'
+    - cron: '30 3 * * *'
+    - cron: '0 4 * * *'
+    - cron: '30 4 * * *'
+    - cron: '0 5 * * *'
+    - cron: '30 5 * * *'
+    - cron: '0 6 * * *'
+    - cron: '30 6 * * *'
+    - cron: '0 7 * * *'
+    - cron: '30 7 * * *'
+    - cron: '0 8 * * *'
+    - cron: '30 8 * * *'
+    - cron: '0 9 * * *'
+    - cron: '30 9 * * *'
+    - cron: '0 10 * * *'
+    - cron: '30 10 * * *'
+    - cron: '0 11 * * *'
+    - cron: '30 11 * * *'
+    - cron: '0 12 * * *'
+    - cron: '30 12 * * *'
+    - cron: '0 13 * * *'
+    - cron: '30 13 * * *'
+    - cron: '0 14 * * *'
+    - cron: '30 14 * * *'
+    - cron: '0 15 * * *'
+    - cron: '30 15 * * *'
+    - cron: '0 16 * * *'
+    - cron: '30 16 * * *'
+    - cron: '0 17 * * *'
+    - cron: '30 17 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: pip-
+
+      - name: Cache cooldown file
+        uses: actions/cache@v4
+        with:
+          path: cooldown.json
+          key: ha-cooldown-state-v1
+          restore-keys: ha-cooldown-
+
+      - name: Install libraries
+        run: pip install -r requirements.txt
+
+      - name: Run Bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+        run: python ha_signals_bot.py
