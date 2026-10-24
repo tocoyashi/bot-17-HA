@@ -31,7 +31,7 @@ TP2_PERCENT = 2.0
 MIN_HA_BODY = 0.2
 
 # ✅ نافذة التداول: أول 18 ساعة من اليوم
-TRADING_WINDOW_HOURS = 18
+TRADING_WINDOW_HOURS = 9
 
 # Quality Filters
 MIN_ATR_PERCENT = 0.03
